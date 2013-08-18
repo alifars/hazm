@@ -1,4 +1,4 @@
 #-*- coding: utf-8 -*-
-from perstem import PerstemStemmer
-c = PerstemStemmer()
+from PerStemmer import PerStemmer
+c = PerStemmer()
 c.stemText("۱۲۳۴")
