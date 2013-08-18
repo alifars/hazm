@@ -63,7 +63,7 @@ sudo dpkg -i PACKAGE_NAME.deb
 
 # Example
 
-## Virsatiar
+## Virsatyar
 
 for run sample code `test.py`, you should use below instruction:
 
