@@ -1,6 +1,11 @@
 Persian NLP
 ===========
 
+
+# Requirements
+
+## IronPython
+
 Use [Virastyar] (http://sourceforge.net/projects/virastyar/) on python
 
 <img src="http://virastyar.ir/themes/virtheme/images/virastyar.png">
@@ -28,13 +33,7 @@ sudo apt-get install mono-complete
 for install all dependencies, use below instructions:
 
 ```bash
-sudo apt-get install libmono-corlib2.0-cil
-
-sudo apt-get install libmono-system2.0-cil
-
-sudo apt-get install libmono-system-runtime2.0-cil
-
-sudo apt-get install libmono-winforms2.0-cil
+sudo apt-get install libmono-corlib2.0-cil libmono-system2.0-cil libmono-system-runtime2.0-cil libmono-winforms2.0-cil
 ```
 
 there is one more dependency that is not possible use **apt-get** to install it, you should download **libdlr0.9-cil** from below link:
@@ -62,7 +61,9 @@ sudo dpkg -i PACKAGE_NAME.deb
 
 <hr />
 
-## Example
+# Example
+
+## Virsatiar
 
 for run sample code `test.py`, you should use below instruction:
 
@@ -85,6 +86,14 @@ result = ParsingUtils.ConvertNumber2Persian(str)
 
 print result.ToString()
 ```
+
+## Stemmer
+```python
+from perstem import PerStemmer
+stemmer = PerStemmer()
+stemmer.stem(u'کتاب‌ها') # کتاب
+```
+
 <hr />
 
 ### License
