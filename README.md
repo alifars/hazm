@@ -33,7 +33,7 @@ sudo apt-get install mono-complete
 for install all dependencies, use below instructions:
 
 ```bash
-sudo apt-get install libmono-corlib2.0-cil libmono-system2.0-cil libmono-system-runtime2.0-cil libmono-winforms2.0-cil
+sudo apt-get install libmono-corlib2.0-cil libmono-system2.0-cil libmono-system-runtime2.0-cil libmono-winforms2.0-cil libmono-i18n2.0-cil
 ```
 
 there is one more dependency that is not possible use **apt-get** to install it, you should download **libdlr0.9-cil** from below link:
