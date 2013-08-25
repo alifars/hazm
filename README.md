@@ -90,6 +90,7 @@ print result.ToString()
 ## Stemmer
 ```python
 from perstem import PerStemmer
+
 stemmer = PerStemmer()
 result = stemmer.stem(u'کتاب ها')
 print result # کتاب
