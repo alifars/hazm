@@ -1,6 +1,4 @@
 #-*- coding: utf-8 -*-
-import sys
-sys.path.append('/usr/lib/python2.7')
 import string, clr
 clr.AddReference("./Virastyar.NLP.Morphology.Inflection.dll")
 clr.AddReference("./Virastyar.PersianTools.dll")
