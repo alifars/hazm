@@ -91,7 +91,8 @@ print result.ToString()
 ```python
 from perstem import PerStemmer
 stemmer = PerStemmer()
-stemmer.stem(u'کتاب‌ها') # کتاب
+result = stemmer.stem(u'کتاب ها')
+print result # کتاب
 ```
 
 <hr />
