@@ -3,7 +3,7 @@ from sets import Set
 from pyquery import PyQuery as pq
 import nltk, os, re
 
-hamshahri_root = '/home/server/corpora/hamshahri'
+hamshahri_root = '/home/server/pltk/data/hamshahri'
 
 class Document:
 	id = ''
@@ -86,10 +86,10 @@ def docs(years='*', fids='*'):
 	"""
 		Returns list of Document objects that contains information of each document in hamshahri corpus
 		
-		>>> docs(fids='1996/HAM2-961221.xml')[0].id
+		>>> list(docs(fids='1996/HAM2-961221.xml'))[0].id
 		'HAM2-751001-001'
 		
-		>>> docs(fids='1996/HAM2-961221.xml')[10].category
+		>>> list(docs(fids='1996/HAM2-961221.xml'))[10].category
 		'Science and Culture'
 	"""
 	if type(years) is int:
@@ -103,7 +103,6 @@ def docs(years='*', fids='*'):
 	for fid in fids:
 		corpus = raw(fid)
 		corpus = corpus.replace('<![CDATA[', '').replace(']]>', '')
-		documents = []
 		try:
 			d = pq(corpus, parser='html')
 			for doc in d('DOC'):
@@ -119,10 +118,9 @@ def docs(years='*', fids='*'):
 				document.persiancategory = dc('CAT[xml\:lang=fa]').text()
 				document.title = dc('TITLE').text()
 				document.text = dc('TEXT').text()
-				documents.append(document)
+				yield  document
 		except:
 			print('Format of "' + fid + '" file is not appropriate')
-	return documents
 		
 def categories(years='*', fids='*', lang='en'):
 	"""
@@ -164,7 +162,7 @@ def sents(years='*', fids='*'):
 	"""
 		Returns list of sentences
 	
-		>>> len(sents(fids='1996/HAM2-961221.xml')[0])
+		>>> len(list(sents(fids='1996/HAM2-961221.xml'))[0])
 		2436
 	"""
 	if type(years) is int:
@@ -175,7 +173,6 @@ def sents(years='*', fids='*'):
 	elif type(years) is str:
 		fids = [fids]
 		
-	sentences = []
 	for fid in fids:
 		corpus = raw(fid)
 		corpus = corpus.replace('<![CDATA[', '').replace(']]>', '')
@@ -186,9 +183,9 @@ def sents(years='*', fids='*'):
 				pattern = re.compile(r'<image>.*?</image>')
 				data = pattern.sub('', data)
 				text = nltk.clean_html(data)
-				sentences.append(text)
+				yield text
 		except:
 			print('Format of "' + fid + '" file is not appropriate')
-	return sentences
+
 	
 	#words()
