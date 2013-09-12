@@ -1,5 +1,5 @@
 from nltk.tag.stanford import POSTagger
-import re, subprocess
+import subprocess
 
 class PersianPOSTagger(POSTagger):
 	"""
@@ -25,43 +25,27 @@ class PersianPOSTagger(POSTagger):
 		if (args_count >= 3):
 			lst[2] = 'utf8'
 		else:
-			kwargs['encoding'] = 'utf8'
+			kwargs['encoding'] = '`'
 		args = tuple(lst)
 
 		super(PersianPOSTagger, self).__init__(*args, **kwargs)		
 
-	def convert_to_stanford_format(self, input, output, hasGold=True):
-		writer = open(output, 'w')
-		lines = open(input).readlines()
-		newLine = True
-		for line in lines:
-			line = line.strip('\r\n')
-			words = re.split(" +", line)
-
-			if (words[0] == '#'):
-				if (newLine == False):
-					writer.write("\n")
-				newLine = True
-			else:
-				if (newLine == False):
-					writer.write(" ")
-				writer.write("_".join(words[0:len(words)-1]))
-				if (hasGold == True):
-					writer.write("/" + words[len(words)-1])
-				newLine = False
-				if (words[0] == '.' and words[len(words)-1] == 'DELM'):
-					newLine = True
-					writer.write("\n")
-
-	def train(self, train_file, properties, model, xms='-Xms120m', xmx='-Xmx1g'):
-		cmd = ['java', xms, xmx, '-classpath', self._path_to_jar, 'edu.stanford.nlp.tagger.maxent.MaxentTagger',
+	@staticmethod
+	def train(train_file, properties, model, xms='-Xms120m', xmx='-Xmx1g'):
+		"""
+			>>> PersianPOSTagger.train('/home/server/pltk/data/bijankhan-train.txt','/home/server/pltk/data/persian-left3words-distsim.tagger.props', '/home/server/pltk/data/persian.mco')
+		"""
+		#	def train(self, train_file, properties, model, xms='-Xms120m', xmx='-Xmx1g'):
+		#		cmd = ['java', xms, xmx, '-classpath', self._path_to_jar, 'edu.stanford.nlp.tagger.maxent.MaxentTagger',
+		path_to_jar = '/home/server/pltk/resources/stanford-postagger.jar'
+		cmd = ['java', xms, xmx, '-classpath', path_to_jar, 'edu.stanford.nlp.tagger.maxent.MaxentTagger',
                    '-prop', properties,
                    '-model', model, 
                    '-trainFile', train_file,
                    '-tagSeparator', '/']
 		output=subprocess.PIPE
-		p = subprocess.Popen(cmd, stdout=output, stderr=output)
-		
+		p = subprocess.Popen(cmd)#, stdout=output, stderr=output)
 
-#PersianPOSTagger(jar='')
-#		self._JAR
+
+if __name__ == '__main__':
+	PersianPOSTagger.train('/home/server/pltk/data/bijankhan-train.txt','/home/server/pltk/data/persian-left3words-distsim.tagger.props', '/home/server/pltk/data/persian.mco')
