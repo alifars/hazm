@@ -71,7 +71,7 @@ def split_train_test(separator='/', test_size=0.25):
 	setences = list(sents(True, separator))
 	return cross_validation.train_test_split(setences, test_size=test_size)
 
-def export_train_test(train_file, test_file, separator='/', test_size=0.25):
+def export_train_test(train_file, test_file, separator='/', test_size=0.1):
 	"""
 		>>> export_train_test('/home/server/pltk/data/bijankhan-train.txt', '/home/server/pltk/data/bijankhan-test.txt')
 	"""

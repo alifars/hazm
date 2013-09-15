@@ -1,4 +1,5 @@
 from nltk.tag.stanford import POSTagger
+from nltk.tag import str2tuple
 import subprocess
 
 class PersianPOSTagger(POSTagger):
@@ -25,13 +26,13 @@ class PersianPOSTagger(POSTagger):
 		if (args_count >= 3):
 			lst[2] = 'utf8'
 		else:
-			kwargs['encoding'] = '`'
+			kwargs['encoding'] = 'utf8'
 		args = tuple(lst)
 
 		super(PersianPOSTagger, self).__init__(*args, **kwargs)		
 
 	@staticmethod
-	def train(train_file, properties, model, xms='-Xms120m', xmx='-Xmx1g'):
+	def train(train_file, properties, model, xms='-Xms1g', xmx='-Xmx2g', verbose=True):
 		"""
 			>>> PersianPOSTagger.train('/home/server/pltk/data/bijankhan-train.txt','/home/server/pltk/data/persian-left3words-distsim.tagger.props', '/home/server/pltk/data/persian.mco')
 		"""
@@ -44,8 +45,20 @@ class PersianPOSTagger(POSTagger):
                    '-trainFile', train_file,
                    '-tagSeparator', '/']
 		output=subprocess.PIPE
-		p = subprocess.Popen(cmd)#, stdout=output, stderr=output)
+		if (verbose == True):
+			p = subprocess.Popen(cmd)
+		else:
+			p = subprocess.Popen(cmd, stdout=output, stderr=output)
 
+	def evaluate_file(self, gold_file):
+		corpus = []
+		tag_convert = lambda t: (t[0].decode('utf-8'), t[1].decode('utf-8'))
+		lines = open(gold_file).readlines()
+		for sent in lines:
+			corpus.append([tag_convert(str2tuple(t)) for t in sent.split()])
+		return super(PersianPOSTagger, self).evaluate(corpus)
 
 if __name__ == '__main__':
-	PersianPOSTagger.train('/home/server/pltk/data/bijankhan-train.txt','/home/server/pltk/data/persian-left3words-distsim.tagger.props', '/home/server/pltk/data/persian.mco')
+	PersianPOSTagger.train('/home/server/pltk/data/bijankhan-train.txt','/home/server/pltk/data/persian-left3words-distsim.tagger.props', '/home/server/pltk/data/persian.tagger')
+	st = PersianPOSTagger('/home/server/pltk/data/persian.tagger')
+	st.evaluate_file('/home/server/pltk/data/bijankhan-test.txt')
