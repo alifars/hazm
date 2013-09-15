@@ -13,7 +13,7 @@ class VirastyarPersianLemmatizer():
 	>>> VirastyarPersianLemmatizer().lemma(u'کتباها')
 	کتاب
 	>>> VirastyarPersianLemmatizer().lemma(u'می‌خورم')
-	می‌خور
+	خور
 	>>> VirastyarPersianLemmatizer(string_matching=False).lemma(u'کتابها')
 	کتابها
 	# it check PseudoSpaces
@@ -24,6 +24,10 @@ class VirastyarPersianLemmatizer():
 	>>> VirastyarPersianLemmatizer(phonetic_comparison=False).lemma(u'دانام')
 	دانام
 
+	>>> VirastyarPersianLemmatizer(ignore_lexicalLemma = True).lemma(u'طاها')
+	طا
+	>>> VirastyarPersianLemmatizer(ignore_lexicalLemma = False).lemma(u'طاها')
+	طاها
 	# if ignore_lexicalLemma == False, it check and search for data in 'Dic.dat' else ignore it(Rule base lemmatization)
 
 
