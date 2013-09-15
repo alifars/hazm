@@ -10,27 +10,26 @@ import Virastyar.NLP.Morphology.Inflection.StringMatching as StringMatching
 
 class VirastyarPersianLemmatizer():
 	""" 
-
-	>>> PersianLemmatizer().lemma(u'کتباها')
+	>>> VirastyarPersianLemmatizer().lemma(u'کتباها')
 	کتاب
-	>>> PersianLemmatizer().lemma(u'می‌خورم')
+	>>> VirastyarPersianLemmatizer().lemma(u'می‌خورم')
 	می‌خور
-	>>> PersianLemmatizer(string_matching=False).lemma(u'کتابها')
+	>>> VirastyarPersianLemmatizer(string_matching=False).lemma(u'کتابها')
 	کتابها
 	# it check PseudoSpaces
 	# if string_matching == True, it ignore checking all PseudoSpaces
 
-	>>> PersianLemmatizer(phonetic_comparison=True).lemma(u'دانام')
+	>>> VirastyarPersianLemmatizer(phonetic_comparison=True).lemma(u'دانام')
 	دان
-	>>> PersianLemmatizer(phonetic_comparison=False).lemma(u'دانام')
+	>>> VirastyarPersianLemmatizer(phonetic_comparison=False).lemma(u'دانام')
 	دانام
 
 	# if ignore_lexicalLemma == False, it check and search for data in 'Dic.dat' else ignore it(Rule base lemmatization)
 
 
-	>>> PersianLemmatizer(ignore_declentionRules == False).lemma(u'می‌کتاب')
+	>>> VirastyarPersianLemmatizer(ignore_declentionRules == False).lemma(u'می‌کتاب')
 	می‌کتاب
-	>>> PersianLemmatizer(ignore_declentionRules == True).lemma(u'می‌کتاب')
+	>>> VirastyarPersianLemmatizer(ignore_declentionRules == True).lemma(u'می‌کتاب')
 	کتاب
 	
 	"""
@@ -57,3 +56,16 @@ class VirastyarPersianLemmatizer():
 			return token
 		else:
 			return lemmawords[0].Lemma
+
+class VirastyarWordTokenizer():
+	"""
+	>>> VirastyarWordTokenizer.tokenize(u'من به مدرسه رفتم')
+	[u' من', u' به', u' مدرسه', u' رفتم']
+
+	"""
+	def __init__(self):
+		self.wordtokenizer = WordTokenizer(0)
+
+	def tokenize(self , line):
+		return [word.Value for word in self.wordtokenizer.Tokenize(line)]
+		
