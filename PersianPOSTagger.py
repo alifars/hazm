@@ -12,8 +12,8 @@ class PersianPOSTagger(POSTagger):
 	"""
 
 	_SEPARATOR = '/'
-	_path_to_jar = '/home/server/pltk/resources/stanford-postagger.jar'
-	bijankhan_path = '/home/server/pltk/data/bijankhan.txt'
+	_path_to_jar = 'resources/stanford-postagger.jar'
+	bijankhan_path = 'data/bijankhan.txt'
 
 	def __init__(self, *args, **kwargs):
 		lst = list(args)
@@ -34,11 +34,11 @@ class PersianPOSTagger(POSTagger):
 	@staticmethod
 	def train(train_file, properties, model, xms='-Xms1g', xmx='-Xmx2g', verbose=True):
 		"""
-			>>> PersianPOSTagger.train('/home/server/pltk/data/bijankhan-train.txt','/home/server/pltk/data/persian-left3words-distsim.tagger.props', '/home/server/pltk/data/persian.mco')
+			>>> PersianPOSTagger.train('data/bijankhan-train.txt','data/persian-left3words-distsim.tagger.props', 'data/persian.mco')
 		"""
 		#	def train(self, train_file, properties, model, xms='-Xms120m', xmx='-Xmx1g'):
 		#		cmd = ['java', xms, xmx, '-classpath', self._path_to_jar, 'edu.stanford.nlp.tagger.maxent.MaxentTagger',
-		path_to_jar = '/home/server/pltk/resources/stanford-postagger.jar'
+		path_to_jar = 'resources/stanford-postagger.jar'
 		cmd = ['java', xms, xmx, '-classpath', path_to_jar, 'edu.stanford.nlp.tagger.maxent.MaxentTagger',
                    '-prop', properties,
                    '-model', model, 
@@ -59,6 +59,6 @@ class PersianPOSTagger(POSTagger):
 		return super(PersianPOSTagger, self).evaluate(corpus)
 
 if __name__ == '__main__':
-	PersianPOSTagger.train('/home/server/pltk/data/bijankhan-train.txt','/home/server/pltk/data/persian-left3words-distsim.tagger.props', '/home/server/pltk/data/persian.tagger')
-	st = PersianPOSTagger('/home/server/pltk/data/persian.tagger')
-	st.evaluate_file('/home/server/pltk/data/bijankhan-test.txt')
+	PersianPOSTagger.train('data/bijankhan-train.txt','data/persian-left3words-distsim.tagger.props', 'data/persian.tagger')
+	st = PersianPOSTagger('data/persian.tagger')
+	st.evaluate_file('data/bijankhan-test.txt')
