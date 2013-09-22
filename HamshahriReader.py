@@ -1,5 +1,4 @@
 from nltk.corpus import PlaintextCorpusReader
-from sets import Set
 from pyquery import PyQuery as pq
 import nltk, os, re
 
@@ -146,7 +145,7 @@ def categories(years='*', fids='*', lang='en'):
 	elif type(years) is str:
 		fids = [fids]
 		
-	categories = Set([])
+	categories = set()
 	for fid in fids:
 		corpus = raw(fid)
 		corpus = corpus.replace('<![CDATA[', '').replace(']]>', '')
