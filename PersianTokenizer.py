@@ -1,6 +1,13 @@
 import re
 
 class PersianTokenizer():
+	# The PersianTokenizer class contains a python version of the original perl implementation of 
+	# the Persian Sentence Segmenter and Tokenizer (SeTPer) described in:
+	# 	- 	Seraji Mojgan, Beáta Megyesi, Joakim Nivre. 2012. 
+	#		A Basic Language Resource Kit for Persian. 
+	#		In Proceedings of the 8th International Conference on Language Resources and Evaluation (LREC). 
+	#		Istanbul, Turkey.
+	
 	def __init__(self):
 		# \u2e2e : arabic question mark 
 		# \u061f: persian question mark
