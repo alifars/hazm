@@ -1,5 +1,7 @@
 from nltk.corpus import PlaintextCorpusReader
 from pyquery import PyQuery as pq
+from PersianTextNormalizer import *
+from PersianTokenizer import *
 import nltk, os, re
 
 hamshahri_root = '/home/server/pltk/data/hamshahri'
@@ -102,6 +104,7 @@ def docs(years='*', fids='*'):
 	for fid in fids:
 		corpus = raw(fid)
 		corpus = corpus.replace('<![CDATA[', '').replace(']]>', '')
+		corpus = corpus.encode('utf-8')
 		try:
 			d = pq(corpus, parser='html')
 			for doc in d('DOC'):
@@ -147,9 +150,11 @@ def categories(years='*', fids='*', lang='en'):
 		
 	categories = set()
 	for fid in fids:
-		corpus = raw(fid)
-		corpus = corpus.replace('<![CDATA[', '').replace(']]>', '')
 		try:
+			corpus = raw(fid)
+			corpus = corpus.replace('<![CDATA[', '').replace(']]>', '')
+			corpus = corpus.encode('utf-8')
+
 			d = pq(corpus, parser='html')
 			for cat in d('CAT[xml\:lang=' + lang + ']'):
 				categories.add(pq(cat).text())
@@ -157,12 +162,12 @@ def categories(years='*', fids='*', lang='en'):
 			print('Format of "' + fid + '" file is not appropriate')
 	return list(categories)
 	
-def sents(years='*', fids='*'):
+def sents(years='*', fids='*', normalize=True):
 	"""
 		Returns list of sentences
 	
 		>>> len(list(sents(fids='1996/HAM2-961221.xml'))[0])
-		2436
+		198
 	"""
 	if type(years) is int:
 		years = [str(years)]
@@ -171,10 +176,14 @@ def sents(years='*', fids='*'):
 		fids = fileids(years)
 	elif type(years) is str:
 		fids = [fids]
+
+	normalizer = PersianTextNormalizer()
+	tokenizer = PersianTokenizer()
 		
 	for fid in fids:
 		corpus = raw(fid)
 		corpus = corpus.replace('<![CDATA[', '').replace(']]>', '')
+		corpus = corpus.encode('utf-8')
 		try:
 			d = pq(corpus, parser='html')
 			for cat in d('TEXT'):
@@ -182,9 +191,21 @@ def sents(years='*', fids='*'):
 				pattern = re.compile(r'<image>.*?</image>')
 				data = pattern.sub('', data)
 				text = nltk.clean_html(data)
-				yield text
+				if (normalize == True):
+					text = normalizer.cleanup(text)
+				for sent in tokenizer.sent_tokenize(text):
+					yield sent
 		except:
 			print('Format of "' + fid + '" file is not appropriate')
 
 	
-	#words()
+def words(years='*', fids='*', normalize=True):
+	"""
+		Returns a list contains list of words in each sentence
+	
+		>>> len(list(words(fids='1996/HAM2-961221.xml'))[0])
+		46
+	"""
+	tokenizer = PersianTokenizer()
+	for sent in sents(years, fids, normalize):
+		yield tokenizer.word_tokenize(sent)
