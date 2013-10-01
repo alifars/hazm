@@ -1,13 +1,16 @@
 from nltk.parse.malt import MaltParser
 from PersianPOSTagger import *
 from nltk.data import ZipFilePathPointer
-from nltk.tokenize import word_tokenize
+from PersianTokenizer import *
+from PersianTextNormalizer import *
 import os
 
 class PersianDependencyParser(MaltParser):
 
 	def __init__(self, tagger=None, mco=None, working_dir="data/parse", path_to_malt="resources"):
 		os.environ["MALTPARSERHOME"] = path_to_malt
+		self._tokenizer = PersianTokenizer()
+		self._normalizer = PersianTextNormalizer()
 		#if tagger is None:
 		#	tagger = PersianPOSTagger('data/persian.tagger')
 		super(PersianDependencyParser, self).__init__(tagger, mco, working_dir)
@@ -22,8 +25,10 @@ class PersianDependencyParser(MaltParser):
 		:type sentence: str
 		:return: ``DependencyGraph`` the dependency graph representation of the sentence
 		"""
-		words = word_tokenize(sentence)
-		return self.parse(words, verbose)
+		sentence = self._normalizer.cleanup(sentence)
+		for sent in self._tokenizer.sent_tokenize(sentence):
+			words = self._tokenizer.word_tokenize(sent)
+			return self.parse(words, verbose)
 
 	def train_from_file(self, conll_file, option_file, guide_file, xms='-Xms1g', xmx='-Xmx2g', verbose=False):
 		"""

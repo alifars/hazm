@@ -42,8 +42,7 @@ class PersianTokenizer():
 
 	def sent_tokenize(self, text):
 		text = self._sentence_pattern.sub(r'\1\n', text)
-		for sent in text.split('\n'):
-			yield sent 
+		return text.split('\n')
 
 	def word_tokenize(self, text):
 		for pattern, rep in self._word_patterns:
