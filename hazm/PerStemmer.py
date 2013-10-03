@@ -1,18 +1,17 @@
 # coding=utf8
 
 from nltk.stem.api import StemmerI
-import os, sys, string, subprocess
+import os, subprocess
 
 class PerStemmer(StemmerI):
-	"""docstring for Stemmer"""
-		
+	""" perstem interface """
+
+	script = os.path.dirname(__file__) + '/perstem.pl'
+
 	def stem(self, token):
-		perstem = subprocess.Popen(['perl','perstem.pl', '--stem', '-i', 'utf8', '-o', 'utf8'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+		perstem = subprocess.Popen(['perl', self.script, '--stem', '-i', 'utf8', '-o', 'utf8'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
 		(data, errs) = perstem.communicate(token)
 		return data
 
 	def stemText(self, text):
 		return self.stem(text)
-		
-		
-
