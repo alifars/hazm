@@ -1,10 +1,10 @@
 from nltk.corpus import PlaintextCorpusReader
 from pyquery import PyQuery as pq
-from PersianTextNormalizer import *
-from PersianTokenizer import *
+from hazm.PersianTextNormalizer import *
+from hazm.PersianTokenizer import *
 import nltk, os, re
 
-hamshahri_root = '/home/server/pltk/data/hamshahri'
+hamshahri_root = 'data/hamshahri'
 
 class Document:
 	id = ''
