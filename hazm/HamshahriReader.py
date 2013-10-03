@@ -1,3 +1,4 @@
+from __future__ import print_function
 from nltk.corpus import PlaintextCorpusReader
 from pyquery import PyQuery as pq
 from hazm.PersianTextNormalizer import *
