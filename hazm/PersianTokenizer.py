@@ -41,6 +41,7 @@ class PersianTokenizer():
 		]
 
 	def sent_tokenize(self, text):
+		text = text.replace("\n", " ")
 		text = self._sentence_pattern.sub(r'\1\n', text)
 		return text.split('\n')
 
