@@ -1,8 +1,9 @@
+
 from nltk.parse.malt import MaltParser
 from PersianPOSTagger import *
 from nltk.data import ZipFilePathPointer
-from PersianTokenizer import *
-from PersianTextNormalizer import *
+from hazm.PersianTokenizer import *
+from hazm.PersianTextNormalizer import *
 import os
 
 class PersianDependencyParser(MaltParser):
@@ -11,8 +12,8 @@ class PersianDependencyParser(MaltParser):
 		os.environ["MALTPARSERHOME"] = path_to_malt
 		self._tokenizer = PersianTokenizer()
 		self._normalizer = PersianTextNormalizer()
-		#if tagger is None:
-		#	tagger = PersianPOSTagger('data/persian.tagger')
+		if tagger is None:
+			tagger = PersianPOSTagger('data/persian.tagger')
 		super(PersianDependencyParser, self).__init__(tagger, mco, working_dir)
 
 	def raw_parse(self, sentence, verbose=False):
@@ -71,7 +72,7 @@ class PersianDependencyParser(MaltParser):
 
 if __name__ == '__main__':
 	parser = PersianDependencyParser(mco="persian")
-	parser.train_from_file('data/train.conll', 'data/parse/optionsFile.xml', 'data/parse/guideFile.xml', verbose=True)
+	parser.train_from_file('data/dadegan/dependency.conll', 'data/parse/optionsFile.xml', 'data/parse/guideFile.xml', verbose=True)
 	txt = "This is a test sentence"
 	graph = parser.raw_parse(txt)
 	graph.tree().pprint()
